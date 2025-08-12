@@ -57,7 +57,7 @@ const postNewCharacter = (req, res) => {
         const newCharacter = {id: newId, name, realName, universe};
 
         jsonData.characters.push(newCharacter);
-        fs.writeFile("data/characters.json", JSON.stringify(jsonData, null, 2), 'utf8');
+        fs.writeFileSync("data/characters.json", JSON.stringify(jsonData, null, 2), 'utf8');
 
         res.status(201).json({
             message: `${name} added successfully`,
@@ -70,5 +70,30 @@ const postNewCharacter = (req, res) => {
     }
 }
 
+const updateCharacter = (req, res) => {
+    try{
+        const id = parseInt(req.params.id);
+        const {name, realName, universe} = req.body;
+        const data = fs.readFileSync("data/characters.json", "utf8");
+        const jsonData = JSON.parse(data);
 
-export {getAllCharacter, getCharacterById, postNewCharacter}
+        if(!name || !realName || !universe){
+            res.status(400).send("Required fields cannot be empty!");
+        }
+        const existingCharacter = jsonData.characters.find((c) => c.id === id);
+        if(!existingCharacter){
+            res.status(404).json("Character not found");
+        }
+
+        const updatedCharacter = {id, name, realName, universe};
+        jsonData.character = jsonData.characters.map(c => c.id === id ? updatedCharacter : c);
+        fs.writeFileSync("data/characters.json", JSON.stringify(jsonData, null, 2), 'utf8');
+    }
+    catch (error) {
+        console.error("Error while updating the character", error);
+        res.status(500).send({error: "Error updating the character!"});
+    }
+}
+
+
+export {getAllCharacter, getCharacterById, postNewCharacter, updateCharacter}
