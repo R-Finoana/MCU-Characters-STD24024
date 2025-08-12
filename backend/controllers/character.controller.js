@@ -86,7 +86,7 @@ const updateCharacter = (req, res) => {
         }
 
         const updatedCharacter = {id, name, realName, universe};
-        jsonData.character = jsonData.characters.map(c => c.id === id ? updatedCharacter : c);
+        jsonData.character = jsonData.characters.map((c) => c.id === id ? updatedCharacter : c);
         fs.writeFileSync("data/characters.json", JSON.stringify(jsonData, null, 2), 'utf8');
     }
     catch (error) {
@@ -95,5 +95,31 @@ const updateCharacter = (req, res) => {
     }
 }
 
+const deleteCharacter = (req, res) => {
+    try{
+        const data = fs.readFileSync("data/characters.json", "utf8");
+        const jsonData = JSON.parse(data);
 
-export {getAllCharacter, getCharacterById, postNewCharacter, updateCharacter}
+        if(!jsonData.characters || !Array.isArray(jsonData.characters)){
+            console.error('Error : characters.json is not an array');
+            return res.status(500).send({error: 'Error : characters.json is not an array'});
+        }
+
+        const id = parseInt(req.params.id);
+        const existingCharacter = jsonData.characters.find((c) => c.id === parseInt(req.params.id));
+        if(!existingCharacter){
+            res.status(404).send("Cannot remove an unexistant character!");
+        }
+        jsonData.characters = jsonData.characters.filter((c) => c.id !== id);
+        fs.writeFileSync("characters.json", JSON.stringify(jsonData, null, 2), 'utf8');
+        res.status(200).json({
+            message: `${existingCharacter.name} removed successfully`,
+        })
+    } catch (error) {
+        console.error("Error while deleting the character", error);
+        res.status(500).send({error: "Error while deleting the character!"});
+    }
+}
+
+
+export {getAllCharacter, getCharacterById, postNewCharacter, updateCharacter, deleteCharacter}
