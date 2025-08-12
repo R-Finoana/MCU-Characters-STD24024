@@ -1,6 +1,6 @@
 import Buttons from "./Buttons";
 
-export default function Table() {
+export default function Table({ characters }) {
     return (
         <>
             <table className="table table-striped">
