@@ -1,9 +1,9 @@
 import './App.css'
-import Table from './components/Table'
+import CharacterCard from './components/CharacterCard.jsx'
 import {useEffect, useState} from "react";
 
 function App() {
-    const [characters, setCharacters] = useState();
+    const [characters, setCharacters] = useState([]);
 
     useEffect(() => {
         fetch("http://localhost:3000/character")
@@ -14,9 +14,17 @@ function App() {
 
     console.log(characters);
 
+    if(!characters){
+        return (
+            <div>
+                <p>Loading ...</p>
+            </div>
+        )
+    }
+
     return (
         <>
-            <Table characters={characters} />
+            <CharacterCard characters={characters}/>
         </>
     )
 }
