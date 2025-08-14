@@ -6,9 +6,9 @@ library.add(faPenToSquare, faTrashCan);
 
 export default function Buttons(){
     return(
-        <div className="update-delete">
-            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-            <FontAwesomeIcon icon="fa-solid fa-trash-can" />
-        </div>
+        <>
+            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" className="cursor-pointer hover:font-bold hover:scale-125 hover:duration-300"/>
+            <FontAwesomeIcon icon="fa-solid fa-trash-can" className="cursor-pointer hover:font-bold hover:scale-125 hover:duration-300"/>
+        </>
     )
 }

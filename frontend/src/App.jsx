@@ -16,7 +16,7 @@ function App() {
 
     if(!characters){
         return (
-            <div>
+            <div className="loading-screen">
                 <p>Loading ...</p>
             </div>
         )
