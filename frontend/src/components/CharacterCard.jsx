@@ -4,15 +4,52 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import { faChevronRight, faEarthAmericas, faUser } from '@fortawesome/free-solid-svg-icons';
 import SearchBar from "./SearchBar.jsx";
 import {useState} from "react";
+import DeleteModal from "./DeleteModal.jsx";
 
 library.add(faChevronRight, faEarthAmericas, faUser);
 
-export default function CharacterCard({characters}) {
+export default function CharacterCard({characters, onDelete }) {
     const [search, setSearch] = useState("");
+    const [modalState, setModalState] = useState({
+        delete: { open: false, character: null },
+    })
+
+    const openModal = (modalName, character) => {
+        setModalState(prev => ({
+            ...prev,
+            [modalName]: { open: true, character }
+        }));
+    }
+
+    const handleDeleteClick = (character) => {
+        openModal('delete', character);
+    }
+
+    const closeModal = (modalName) => {
+        setModalState(prev => ({
+            ...prev,
+            [modalName]: { ...prev[modalName], open: false }
+        }));
+    };
+
+    const handleConfirmDelete = () => {
+        onDelete(modalState.delete.character);
+        closeModal('delete');
+    };
+
+    const handleCancelDelete = () => {
+        closeModal('delete');
+    }
 
     return (
         <>
             <SearchBar onSearchChange={setSearch}/>
+            <DeleteModal
+                open={modalState.delete.open}
+                onClose={() => closeModal("delete")}
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+            />
             {characters.filter(c => c.name.toLowerCase().includes(search)).length > 0 ?
                 (
             <div className="character-card max-w-11/12 mx-auto grid grid-cols-4 gap-10 pt-32">
@@ -23,7 +60,7 @@ export default function CharacterCard({characters}) {
                        <div className="flex justify-between">
                            <h1 className="font-bold">{character.name}</h1>
                            <div className="update-delete flex items-center gap-2">
-                               <Buttons />
+                               <Buttons onDeleteClick={handleDeleteClick} />
                            </div>
                        </div>
                        <div className="flex items-center gap-2">

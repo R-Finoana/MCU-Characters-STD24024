@@ -1,31 +1,38 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import BaseModal from "./BaseModal.jsx";
 
-export default function DeleteModal({ open, onClose, children}) {
-    if(!open) {
-        return null
-    }
+export default function DeleteModal({ open, onClose, onConfirm, onCancel }) {
 
     return (
-        <div
-            onClick={onClose}
-            className={`
-            fixed inset-0 flex justify-center items-center transition-colors
-            ${open ? "visible bg-black/20 backdrop-blur-sm"  : "invisible"}`}
+        <BaseModal
+            open={open}
+            onClose={onClose}
+            onCancel={onCancel || onClose}
         >
-            <div
-                onClick={e => e.stopPropagation()}
-                className={`bg-white rounded-xl shadow p-6 w-full max-w-md mx-4 relative
-            `}>
-                <button
-                    onClick={onClose}
-                    className="absolute top-2 right-2 p-1 rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:text-gray-600 transition-colors">
-                    <button onClick={onClose}>
-                        <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
+            <div className="text-center">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                    Confirm deletion
+                </h3>
+                <p className="text-gray-500 mb-6">
+                    Are you sure you want to delete this character? This action is irreversible
+                </p>
+                <div className="flex justify-center gap-4">
+                    <button
+                        onClick={onCancel || onClose}
+                        className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+                    >
+                        Cancel
                     </button>
-                </button>
-                {children}
+                    <button
+                        onClick={() => {
+                            onConfirm();
+                            onClose();
+                        }}
+                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                    >
+                        Delete
+                    </button>
+                </div>
             </div>
-        </div>
+        </BaseModal>
     )
 }
