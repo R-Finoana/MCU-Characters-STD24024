@@ -5,6 +5,7 @@ import { faChevronRight, faEarthAmericas, faUser } from '@fortawesome/free-solid
 import SearchBar from "./SearchBar.jsx";
 import {useState} from "react";
 import DeleteModal from "./DeleteModal.jsx";
+import UpdateCharacterModal from "./UpdateCharacterModal.jsx";
 
 library.add(faChevronRight, faEarthAmericas, faUser);
 
@@ -12,6 +13,7 @@ export default function CharacterCard({characters, onDelete }) {
     const [search, setSearch] = useState("");
     const [modalState, setModalState] = useState({
         delete: { open: false, character: null },
+        update: { open: false, character: null },
     })
 
     const openModal = (modalName, character) => {
@@ -23,6 +25,10 @@ export default function CharacterCard({characters, onDelete }) {
 
     const handleDeleteClick = (character) => {
         openModal('delete', character);
+    }
+
+    const handleUpdateClick = (character) => {
+        openModal('update', character);
     }
 
     const closeModal = (modalName) => {
@@ -50,6 +56,15 @@ export default function CharacterCard({characters, onDelete }) {
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
             />
+            <UpdateCharacterModal
+                open={modalState.update.open}
+                onClose={() => closeModal("create")}
+                onConfirm={() => {
+                    onDelete(modalState.update.character);
+                    closeModal('create');
+                }}
+                onCancel={() => closeModal("create")}
+            />
             {characters.filter(c => c.name.toLowerCase().includes(search)).length > 0 ?
                 (
             <div className="character-card max-w-11/12 mx-auto grid grid-cols-4 gap-10 pt-32">
@@ -60,7 +75,7 @@ export default function CharacterCard({characters, onDelete }) {
                        <div className="flex justify-between">
                            <h1 className="font-bold">{character.name}</h1>
                            <div className="update-delete flex items-center gap-2">
-                               <Buttons onDeleteClick={handleDeleteClick} />
+                               <Buttons onDeleteClick={handleDeleteClick} onUpdateClick={handleUpdateClick} />
                            </div>
                        </div>
                        <div className="flex items-center gap-2">

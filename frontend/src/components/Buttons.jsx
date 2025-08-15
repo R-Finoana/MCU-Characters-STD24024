@@ -4,11 +4,11 @@ import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faPenToSquare, faTrashCan);
 
-export default function Buttons({ onDeleteClick}) {
+export default function Buttons({ onDeleteClick, onUpdateClick}) {
 
     return(
         <>
-            <button>
+            <button onClick={onUpdateClick} className="transition-colors">
                 <FontAwesomeIcon icon="fa-solid fa-pen-to-square" className="cursor-pointer hover:font-bold hover:scale-125 hover:duration-300"/>
             </button>
             <button onClick={onDeleteClick} className="transition-colors">

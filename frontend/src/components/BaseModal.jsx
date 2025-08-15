@@ -16,7 +16,7 @@ export default function BaseModal({ open, onClose, onCancel, children }) {
             onClick={handleCancel}
             className={`
             fixed inset-0 flex justify-center items-center transition-colors
-            ${open ? "visible bg-black/20 backdrop-blur-sm"  : "invisible"}`}
+            ${open ? "visible bg-black/10 backdrop-blur-sm"  : "invisible"}`}
         >
             <div
                 onClick={e => e.stopPropagation()}
@@ -25,7 +25,7 @@ export default function BaseModal({ open, onClose, onCancel, children }) {
                 <button
                     onClick={handleCancel}
                     className="absolute top-2 right-2 p-1 rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:text-gray-600 transition-colors">
-                        <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
+                        <FontAwesomeIcon icon={faTimes} className="h-6 w-6 cursor-pointer" />
                 </button>
                 {children}
             </div>

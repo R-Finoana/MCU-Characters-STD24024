@@ -18,7 +18,7 @@ export default function DeleteModal({ open, onClose, onConfirm, onCancel }) {
                 <div className="flex justify-center gap-4">
                     <button
                         onClick={onCancel || onClose}
-                        className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+                        className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 w-4/12 cursor-pointer hover:duration-300"
                     >
                         Cancel
                     </button>
@@ -27,7 +27,7 @@ export default function DeleteModal({ open, onClose, onConfirm, onCancel }) {
                             onConfirm();
                             onClose();
                         }}
-                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 w-4/12 cursor-pointer hover:duration-300"
                     >
                         Delete
                     </button>
