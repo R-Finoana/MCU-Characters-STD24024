@@ -11,7 +11,7 @@ import PostCharacterModal from "./PostCharacterModal.jsx";
 
 library.add(faChevronRight, faEarthAmericas, faUser);
 
-export default function CharacterCard({characters, onDelete }) {
+export default function CharacterCard({characters, onDelete, onAddCharacter }) {
     const [search, setSearch] = useState("");
     const [selectedCharacter, setSelectedCharacter] = useState(null);
     const [modalState, setModalState] = useState({
@@ -56,9 +56,11 @@ export default function CharacterCard({characters, onDelete }) {
         closeModal('delete');
     }
 
+    console.log('Characters data:', characters);
+
     return (
         <div
-            className='h-[100vh] w-full'
+            className='h-fit w-full'
             style={{
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/bgmarvel.jpg')`,
                 backgroundRepeat: 'no-repeat',
@@ -91,19 +93,27 @@ export default function CharacterCard({characters, onDelete }) {
             <PostCharacterModal
                 open={modalState.post.open}
                 onClose={() => closeModal("post")}
-                onConfirm={() => {
-                    onDelete(modalState.post.character);
-                    closeModal('post');
+                onConfirm={(characterData) => {
+                    onAddCharacter(characterData)
+                        .then(() => closeModal('post'))
+                        .catch(error => console.error("Error adding character:", error));
                 }}
-                onCancel={() => closeModal("post")}
             />
-            {characters.filter(c => c.name.toLowerCase().includes(search)).length > 0 ?
+            {characters.filter(c => {
+                const name = c?.name || '';
+                const searchTerm = search?.toLowerCase() || '';
+                return typeof name === 'string' && name.toLowerCase().includes(searchTerm);
+            }).length > 0 ?
                 (
             <div className="character-card max-w-11/12 mx-auto grid grid-cols-4 gap-10 py-5">
                 {characters
-                    .filter(c => c.name.toLowerCase().includes(search))
+                    .filter(c => {
+                        const name = c?.name || '';
+                        const searchTerm = search?.toLowerCase() || '';
+                        return typeof name === 'string' && name.toLowerCase().includes(searchTerm);
+                    })
                     .map((character) => (
-                   <div key={character.id} className="grid grid-cols-1 bg-[#1B1B1B] shadow-2xs p-5 rounded-lg h-[20vh] items-center cursor-pointer hover:shadow-2xl hover:-translate-y-3 hover:duration-250">
+                   <div key={`character-${character.id}`} className="grid grid-cols-1 bg-[#1B1B1B] shadow-2xs p-5 rounded-lg h-[20vh] items-center cursor-pointer hover:shadow-2xl hover:-translate-y-3 hover:duration-250">
                        <div className="flex justify-between">
                            <h1 className="font-bold text-[#E62429]">{character.name}</h1>
                            <p className="text-3xl font-bold text-[#E62429]">#{character.id}</p>

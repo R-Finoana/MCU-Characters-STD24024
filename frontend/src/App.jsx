@@ -1,30 +1,31 @@
 import './App.css'
 import CharacterCard from './components/CharacterCard.jsx'
-import {useEffect, useState} from "react";
+import useCharacters from "./hooks/useCharacters.jsx";
 
 function App() {
-    const [characters, setCharacters] = useState([]);
+    const {
+        characters,
+        loading,
+        error,
+        addCharacter,
+    } = useCharacters();
 
-    useEffect(() => {
-        fetch("http://localhost:3000/character")
-            .then(res => res.json())
-            .then(data => setCharacters(data.characters))
-            .catch(err => console.log(err));
-    }, []);
 
-    console.log(characters);
 
-    if(!characters){
-        return (
-            <div className="loading-screen">
-                <p>Loading ...</p>
-            </div>
-        )
+    if (loading) {
+        return <div className="loading-screen">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="error-screen">Error: {error}</div>;
     }
 
     return (
         <>
-            <CharacterCard characters={characters}/>
+            <CharacterCard
+                characters={characters}
+                onAddCharacter={addCharacter}
+            />
         </>
     )
 }
