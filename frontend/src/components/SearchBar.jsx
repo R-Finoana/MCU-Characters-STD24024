@@ -17,7 +17,7 @@ export default function SearchBar({onSearchChange}) {
     }
 
     return (
-        <div className="search-bar flex gap-1 items-center w-1/2 p-2 rounded-xl border-2 border-gray-400">
+        <div className="search-bar flex gap-1 items-center w-1/2 p-2 rounded-xl border-2 border-gray-100 text-white">
             <FontAwesomeIcon icon="magnifying-glass" className="text-2xl"/>
             <input
                 type="search"

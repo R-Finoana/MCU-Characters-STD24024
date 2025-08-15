@@ -22,28 +22,9 @@ function App() {
         )
     }
 
-    const handleCharacterUpdate = async (updatedCharacter) => {
-        try {
-            const response = await fetch(`http://localhost:3000/character/${updatedCharacter.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedCharacter)
-            });
-
-            if (response.ok) {
-
-                const newData = await fetch("http://localhost:3000/character");
-                const jsonData = await newData.json();
-                setCharacters(jsonData.characters);
-            }
-        } catch (error) {
-            console.error("Update error:", error);
-        }
-    };
-
     return (
         <>
-            <CharacterCard characters={characters} onCharacterupdate={handleCharacterUpdate} />
+            <CharacterCard characters={characters}/>
         </>
     )
 }

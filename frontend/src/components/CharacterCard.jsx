@@ -57,7 +57,14 @@ export default function CharacterCard({characters, onDelete }) {
     }
 
     return (
-        <>
+        <div
+            className='h-[100vh] w-full'
+            style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/bgmarvel.jpg')`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'top',
+                backgroundSize: 'cover'}}
+        >
             <div className="flex gap-5 items-center max-w-11/12 mx-auto justify-center py-10">
                 <SearchBar onSearchChange={setSearch}/>
                 <AddButton  onPostClick={handlePostClick}/>
@@ -96,34 +103,36 @@ export default function CharacterCard({characters, onDelete }) {
                 {characters
                     .filter(c => c.name.toLowerCase().includes(search))
                     .map((character) => (
-                   <div key={character.id} className="grid grid-cols-1 bg-amber-100 shadow-2xs p-5 rounded-lg h-[20vh] items-center cursor-pointer hover:shadow-2xl hover:-translate-y-3 hover:duration-250">
+                   <div key={character.id} className="grid grid-cols-1 bg-[#1B1B1B] shadow-2xs p-5 rounded-lg h-[20vh] items-center cursor-pointer hover:shadow-2xl hover:-translate-y-3 hover:duration-250">
                        <div className="flex justify-between">
-                           <h1 className="font-bold">{character.name}</h1>
-                           <p className="text-3xl font-bold">#{character.id}</p>
+                           <h1 className="font-bold text-[#E62429]">{character.name}</h1>
+                           <p className="text-3xl font-bold text-[#E62429]">#{character.id}</p>
                        </div>
                        <div className="flex items-center gap-2">
-                           <FontAwesomeIcon icon="user" />
-                           <p>{character.realName}</p>
+                           <FontAwesomeIcon icon="user" className="text-white"/>
+                           <p className="text-white">{character.realName}</p>
                        </div>
                        <div className="flex justify-between">
                            <div className="flex items-center gap-2">
-                                <FontAwesomeIcon icon="earth-americas" />
-                                <p>{character.universe}</p>
+                                <FontAwesomeIcon icon="earth-americas" className="text-gray-100"/>
+                                <p className="text-gray-100">{character.universe}</p>
                             </div>
                            <div className="update-delete flex items-center gap-2">
-                               <UpdateDeleteButtons onDeleteClick={handleDeleteClick} onUpdateClick={handleUpdateClick} />
+                               <UpdateDeleteButtons onDeleteClick={handleDeleteClick} onUpdateClick={handleUpdateClick}/>
                            </div>
                         </div>
                    </div>
                 ))}
             </div>
                 ) :
-                <div className="flex flex-col justify-center items-center gap-10 h-full w-full mt-20">
-                    <p className="text-3xl font-marvel text-red-500">
+                <div
+                    className="flex justify-center items-center h-[60vh] w-full "
+                >
+                    <p className="text-6xl font-marvel text-red-500">
                         No results found
                     </p>
                 </div>
             }
-        </>
+        </div>
     )
 }
