@@ -17,17 +17,15 @@ export default function SearchBar({onSearchChange}) {
     }
 
     return (
-        <div className="h-22 w-fit top-0 fixed z-50 ">
-            <div className="search-bar flex gap-1 items-center max-w-10/12 mx-auto p-2 rounded-xl border-2 border-gray-400">
-                <FontAwesomeIcon icon="magnifying-glass" className="text-2xl"/>
-                <input
-                    type="search"
-                    placeholder="Search a Marvel character..."
-                    value={search}
-                    onChange={handleChange}
-                    className="w-[80vw] pr-10 h-15 focus:outline-none font-bold"
-                />
-            </div>
+        <div className="search-bar flex gap-1 items-center w-1/2 p-2 rounded-xl border-2 border-gray-400">
+            <FontAwesomeIcon icon="magnifying-glass" className="text-2xl"/>
+            <input
+                type="search"
+                placeholder="Search a Marvel character..."
+                value={search}
+                onChange={handleChange}
+                className="w-[80vw] pr-10 h-12 focus:outline-none font-bold"
+            />
         </div>
     )
 }

@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar.jsx";
 import {useState} from "react";
 import DeleteModal from "./DeleteModal.jsx";
 import UpdateCharacterModal from "./UpdateCharacterModal.jsx";
+import AddButton from "./AddButton.jsx";
 
 library.add(faChevronRight, faEarthAmericas, faUser);
 
@@ -49,7 +50,10 @@ export default function CharacterCard({characters, onDelete }) {
 
     return (
         <>
-            <SearchBar onSearchChange={setSearch}/>
+            <div className="flex gap-5 items-center max-w-11/12 mx-auto justify-center py-10">
+                <SearchBar onSearchChange={setSearch}/>
+                <AddButton />
+            </div>
             <DeleteModal
                 open={modalState.delete.open}
                 onClose={() => closeModal("delete")}
@@ -67,7 +71,7 @@ export default function CharacterCard({characters, onDelete }) {
             />
             {characters.filter(c => c.name.toLowerCase().includes(search)).length > 0 ?
                 (
-            <div className="character-card max-w-11/12 mx-auto grid grid-cols-4 gap-10 pt-32">
+            <div className="character-card max-w-11/12 mx-auto grid grid-cols-4 gap-10 py-5">
                 {characters
                     .filter(c => c.name.toLowerCase().includes(search))
                     .map((character) => (
