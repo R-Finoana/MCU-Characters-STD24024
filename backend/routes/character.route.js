@@ -13,6 +13,6 @@ characterRoute.get("/", getAllCharacter)
 characterRoute.get("/:id", getCharacterById)
 characterRoute.post("/", postNewCharacter);
 characterRoute.put("/:id", updateCharacter);
-characterRoute.get("/:id", deleteCharacter);
+characterRoute.delete("/:id", deleteCharacter);
 
 export default characterRoute;

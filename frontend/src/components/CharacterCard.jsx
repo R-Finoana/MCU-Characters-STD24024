@@ -1,4 +1,4 @@
-import Buttons from "./Buttons";
+import UpdateDeleteButtons from "./UpdateDeleteButtons.jsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import { faChevronRight, faEarthAmericas, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,7 @@ library.add(faChevronRight, faEarthAmericas, faUser);
 
 export default function CharacterCard({characters, onDelete }) {
     const [search, setSearch] = useState("");
+    const [selectedCharacter, setSelectedCharacter] = useState(null);
     const [modalState, setModalState] = useState({
         delete: { open: false, character: null },
         update: { open: false, character: null },
@@ -31,6 +32,7 @@ export default function CharacterCard({characters, onDelete }) {
     }
 
     const handleUpdateClick = (character) => {
+        setSelectedCharacter(character);
         openModal('update', character);
     }
 
@@ -69,11 +71,15 @@ export default function CharacterCard({characters, onDelete }) {
             <UpdateCharacterModal
                 open={modalState.update.open}
                 onClose={() => closeModal("update")}
-                onConfirm={() => {
-                    onDelete(modalState.update.character);
-                    closeModal('update');
+                onConfirm={async (updatedData) => {
+                    try{
+                        console.log("Character updated:", updatedData);
+                    } catch (error){
+                        console.error("Update error:", error);
+                    }
                 }}
                 onCancel={() => closeModal("update")}
+                character={selectedCharacter}
             />
             <PostCharacterModal
                 open={modalState.post.open}
@@ -93,18 +99,21 @@ export default function CharacterCard({characters, onDelete }) {
                    <div key={character.id} className="grid grid-cols-1 bg-amber-100 shadow-2xs p-5 rounded-lg h-[20vh] items-center cursor-pointer hover:shadow-2xl hover:-translate-y-3 hover:duration-250">
                        <div className="flex justify-between">
                            <h1 className="font-bold">{character.name}</h1>
-                           <div className="update-delete flex items-center gap-2">
-                               <Buttons onDeleteClick={handleDeleteClick} onUpdateClick={handleUpdateClick} />
-                           </div>
+                           <p className="text-3xl font-bold">#{character.id}</p>
                        </div>
                        <div className="flex items-center gap-2">
                            <FontAwesomeIcon icon="user" />
                            <p>{character.realName}</p>
                        </div>
-                       <div className="flex items-center gap-2">
-                           <FontAwesomeIcon icon="earth-americas" />
-                           <p>{character.universe}</p>
-                       </div>
+                       <div className="flex justify-between">
+                           <div className="flex items-center gap-2">
+                                <FontAwesomeIcon icon="earth-americas" />
+                                <p>{character.universe}</p>
+                            </div>
+                           <div className="update-delete flex items-center gap-2">
+                               <UpdateDeleteButtons onDeleteClick={handleDeleteClick} onUpdateClick={handleUpdateClick} />
+                           </div>
+                        </div>
                    </div>
                 ))}
             </div>

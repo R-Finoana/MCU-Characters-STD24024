@@ -86,8 +86,9 @@ const updateCharacter = (req, res) => {
         }
 
         const updatedCharacter = {id, name, realName, universe};
-        jsonData.character = jsonData.characters.map((c) => c.id === id ? updatedCharacter : c);
+        jsonData.characters = jsonData.characters.map((c) => c.id === id ? updatedCharacter : c);
         fs.writeFileSync("data/characters.json", JSON.stringify(jsonData, null, 2), 'utf8');
+        res.json(updatedCharacter);
     }
     catch (error) {
         console.error("Error while updating the character", error);

@@ -4,7 +4,7 @@ import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faPenToSquare, faTrashCan);
 
-export default function Buttons({ onDeleteClick, onUpdateClick}) {
+export default function UpdateDeleteButtons({ onDeleteClick, onUpdateClick}) {
 
     return(
         <>
