@@ -7,6 +7,7 @@ import {useState} from "react";
 import DeleteModal from "./DeleteModal.jsx";
 import UpdateCharacterModal from "./UpdateCharacterModal.jsx";
 import AddButton from "./AddButton.jsx";
+import PostCharacterModal from "./PostCharacterModal.jsx";
 
 library.add(faChevronRight, faEarthAmericas, faUser);
 
@@ -15,6 +16,7 @@ export default function CharacterCard({characters, onDelete }) {
     const [modalState, setModalState] = useState({
         delete: { open: false, character: null },
         update: { open: false, character: null },
+        post: { open: false, character: null },
     })
 
     const openModal = (modalName, character) => {
@@ -30,6 +32,10 @@ export default function CharacterCard({characters, onDelete }) {
 
     const handleUpdateClick = (character) => {
         openModal('update', character);
+    }
+
+    const handlePostClick = (character) => {
+        openModal('post', character);
     }
 
     const closeModal = (modalName) => {
@@ -52,7 +58,7 @@ export default function CharacterCard({characters, onDelete }) {
         <>
             <div className="flex gap-5 items-center max-w-11/12 mx-auto justify-center py-10">
                 <SearchBar onSearchChange={setSearch}/>
-                <AddButton />
+                <AddButton  onPostClick={handlePostClick}/>
             </div>
             <DeleteModal
                 open={modalState.delete.open}
@@ -62,12 +68,21 @@ export default function CharacterCard({characters, onDelete }) {
             />
             <UpdateCharacterModal
                 open={modalState.update.open}
-                onClose={() => closeModal("create")}
+                onClose={() => closeModal("update")}
                 onConfirm={() => {
                     onDelete(modalState.update.character);
-                    closeModal('create');
+                    closeModal('update');
                 }}
-                onCancel={() => closeModal("create")}
+                onCancel={() => closeModal("update")}
+            />
+            <PostCharacterModal
+                open={modalState.post.open}
+                onClose={() => closeModal("post")}
+                onConfirm={() => {
+                    onDelete(modalState.post.character);
+                    closeModal('post');
+                }}
+                onCancel={() => closeModal("post")}
             />
             {characters.filter(c => c.name.toLowerCase().includes(search)).length > 0 ?
                 (

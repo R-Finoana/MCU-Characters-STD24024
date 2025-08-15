@@ -1,6 +1,6 @@
 import BaseModal from "./BaseModal.jsx";
 
-export default function UpdateCharacterModal({ open, onClose, onConfirm, onCancel }) {
+export default function PostCharacterModal({ open, onClose, onConfirm, onCancel }) {
 
     return (
         <BaseModal
@@ -10,7 +10,7 @@ export default function UpdateCharacterModal({ open, onClose, onConfirm, onCance
         >
             <form className="flex flex-col gap-5">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
-                    Update Character
+                    Create new Character
                 </h3>
                 <div className="flex flex-col gap-1">
                     <p className="text-black">
@@ -56,7 +56,7 @@ export default function UpdateCharacterModal({ open, onClose, onConfirm, onCance
                         }}
                         className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer w-4/12 hover:duration-300"
                     >
-                        Update
+                        Create
                     </button>
                 </div>
             </form>
