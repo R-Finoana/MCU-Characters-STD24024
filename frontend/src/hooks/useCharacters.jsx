@@ -76,11 +76,33 @@ export default function useCharacters() {
         }
     };
 
+    const deleteCharacter = async (id) => {
+        try {
+            console.log("Sending DELETE request for ID:", id);
+            const response = await fetch(`http://localhost:3000/character/${id}`, {
+                method: "DELETE"
+            });
+
+            console.log("Delete response status:", response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            setCharacters(prev => prev.filter(c => c.id !== id));
+            return true;
+        } catch (err) {
+            console.error("Delete failed:", err);
+            throw err;
+        }
+    };
+
     return {
         characters,
         loading,
         error,
         addCharacter,
-        updateCharacter
+        updateCharacter,
+        deleteCharacter,
     }
 }

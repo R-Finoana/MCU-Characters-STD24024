@@ -9,6 +9,7 @@ function App() {
         error,
         addCharacter,
         updateCharacter,
+        deleteCharacter,
     } = useCharacters();
 
 
@@ -27,6 +28,7 @@ function App() {
                 characters={characters}
                 onAddCharacter={addCharacter}
                 onUpdate={updateCharacter}
+                onDelete={deleteCharacter}
             />
         </>
     )

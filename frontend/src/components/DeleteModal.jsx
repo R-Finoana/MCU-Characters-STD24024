@@ -1,6 +1,13 @@
 import BaseModal from "./BaseModal.jsx";
+import {useEffect} from "react";
 
-export default function DeleteModal({ open, onClose, onConfirm, onCancel }) {
+export default function DeleteModal({ open, onClose, onConfirm, onCancel, character }) {
+
+    useEffect(() => {
+        if (!character) {
+            console.error("DeleteModal received null character");
+        }
+    }, [character]);
 
     return (
         <BaseModal
@@ -24,6 +31,7 @@ export default function DeleteModal({ open, onClose, onConfirm, onCancel }) {
                     </button>
                     <button
                         onClick={() => {
+                            console.log("Confirming delete for:", character);
                             onConfirm();
                             onClose();
                         }}

@@ -45,9 +45,19 @@ export default function CharacterCard({characters, onDelete, onAddCharacter, onU
         }));
     };
 
-    const handleConfirmDelete = () => {
-        onDelete(modalState.delete.character);
-        closeModal('delete');
+    const handleConfirmDelete = async () => {
+        try {
+            if (!modalState.delete.character || !modalState.delete.character.id) {
+                console.error("Delete error - Character data:", modalState.delete.character);
+                throw new Error("Please select a character to delete");
+            }
+
+            await onDelete(modalState.delete.character.id);
+            closeModal('delete');
+        } catch (error) {
+            console.error("Delete failed:", error);
+            alert(error.message);
+        }
     };
 
     const handleCancelDelete = () => {
@@ -58,7 +68,7 @@ export default function CharacterCard({characters, onDelete, onAddCharacter, onU
 
     return (
         <div
-            className='h-fit w-full'
+            className='h-[100vh] w-full'
             style={{
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/bgmarvel.jpg')`,
                 backgroundRepeat: 'no-repeat',
@@ -131,7 +141,7 @@ export default function CharacterCard({characters, onDelete, onAddCharacter, onU
                                 <p className="text-gray-100">{character.universe}</p>
                             </div>
                            <div className="update-delete flex items-center gap-2">
-                               <UpdateDeleteButtons onDeleteClick={handleDeleteClick} onUpdateClick={handleUpdateClick}/>
+                               <UpdateDeleteButtons onDeleteClick={() => handleDeleteClick(character)} onUpdateClick={() => handleUpdateClick(character)}/>
                            </div>
                         </div>
                    </div>
