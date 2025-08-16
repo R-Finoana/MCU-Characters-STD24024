@@ -5,15 +5,14 @@ import { faChevronRight, faEarthAmericas, faUser } from '@fortawesome/free-solid
 import SearchBar from "./SearchBar.jsx";
 import {useState} from "react";
 import DeleteModal from "./DeleteModal.jsx";
-import UpdateCharacterModal from "./UpdateCharacterModal.jsx";
+import UpdateModal from "./UpdateModal.jsx";
 import AddButton from "./AddButton.jsx";
 import PostCharacterModal from "./PostCharacterModal.jsx";
 
 library.add(faChevronRight, faEarthAmericas, faUser);
 
-export default function CharacterCard({characters, onDelete, onAddCharacter }) {
+export default function CharacterCard({characters, onDelete, onAddCharacter, onUpdate }) {
     const [search, setSearch] = useState("");
-    const [selectedCharacter, setSelectedCharacter] = useState(null);
     const [modalState, setModalState] = useState({
         delete: { open: false, character: null },
         update: { open: false, character: null },
@@ -32,7 +31,6 @@ export default function CharacterCard({characters, onDelete, onAddCharacter }) {
     }
 
     const handleUpdateClick = (character) => {
-        setSelectedCharacter(character);
         openModal('update', character);
     }
 
@@ -77,18 +75,23 @@ export default function CharacterCard({characters, onDelete, onAddCharacter }) {
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
             />
-            <UpdateCharacterModal
+            <UpdateModal
                 open={modalState.update.open}
                 onClose={() => closeModal("update")}
                 onConfirm={async (updatedData) => {
                     try{
-                        console.log("Character updated:", updatedData);
-                    } catch (error){
+                        const characterId = modalState.update.character?.id;
+                        if (!characterId) {
+                            throw new Error("No character ID found");
+                        }
+                        await onUpdate(characterId, updatedData);
+                        closeModal("update");
+                    } catch (error) {
                         console.error("Update error:", error);
                     }
                 }}
                 onCancel={() => closeModal("update")}
-                character={selectedCharacter}
+                character={modalState.update.character}
             />
             <PostCharacterModal
                 open={modalState.post.open}

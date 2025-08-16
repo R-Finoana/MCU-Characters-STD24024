@@ -8,6 +8,7 @@ function App() {
         loading,
         error,
         addCharacter,
+        updateCharacter,
     } = useCharacters();
 
 
@@ -25,6 +26,7 @@ function App() {
             <CharacterCard
                 characters={characters}
                 onAddCharacter={addCharacter}
+                onUpdate={updateCharacter}
             />
         </>
     )

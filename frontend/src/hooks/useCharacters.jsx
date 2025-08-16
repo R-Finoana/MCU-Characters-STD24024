@@ -47,10 +47,40 @@ export default function useCharacters() {
         }
     }
 
+    const updateCharacter = async (id, characterData) => {
+        console.log("Updating character with ID:", id);
+        try {
+            const response = await fetch(`http://localhost:3000/character/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(characterData)
+            });
+
+            const text = await response.text();
+            const data = text ? JSON.parse(text) : {};
+
+            if (!response.ok) {
+                throw new Error(data.message || `HTTP error! status: ${response.status}`);
+            }
+
+            setCharacters(prev => prev.map(c => c.id === id ? data : c));
+            return data;
+
+        } catch (err) {
+            console.error("Update failed:", {
+                error: err,
+                id,
+                payload: characterData
+            });
+            throw err;
+        }
+    };
+
     return {
         characters,
         loading,
         error,
-        addCharacter
+        addCharacter,
+        updateCharacter
     }
 }

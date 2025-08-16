@@ -1,7 +1,7 @@
 import BaseModal from "./BaseModal.jsx";
 import {useEffect, useState} from "react";
 
-export default function UpdateCharacterModal({ open, onClose, onConfirm, onCancel, character }) {
+export default function UpdateModal({ open, onClose, onConfirm, onCancel, character }) {
     const [formData, setFormData] = useState({
         name: "",
         realName: "",
@@ -28,37 +28,17 @@ export default function UpdateCharacterModal({ open, onClose, onConfirm, onCance
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.name || !formData.realName || !formData.universe) {
+            alert("Please fill all required fields");
+            return;
+        }
 
         try {
             console.log("Sending update:", formData);
-
-            const response = await fetch(`http://localhost:3000/character/${character.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: formData.name,
-                    realName: formData.realName,
-                    universe: formData.universe,
-                })
-            });
-            console.log("Response status:", response.status);
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Backend error:", errorData);
-                throw new Error(errorData.message || "Update failed");
-            }
-
-            const updatedCharacter = await response.json();
-            console.log("Update successful:", updatedCharacter);
-
-            onConfirm(updatedCharacter);
-            onClose();
+            await onConfirm(formData);
         } catch (error) {
-            console.error("Error updating character details:", {
-                error: error.message
-            });
-            alert(`Failed to update character : ${error.message}` );
+            console.error("Update failed:", error);
+            alert(error.message);
         }
     }
 
